@@ -11,15 +11,17 @@ namespace TheBarkingLotHasslerChasenB
         static bool isInt = false;
         static bool isDouble = false;
 
-        static int id = 0;
-        static int age = 0;
-        static String name = "";
-        static String breed = "";
-        static double weight = 0.0;
+        
 
         static void Main(string[] args)
         {
-            HandleInput("Please enter your Owner ID", id);
+
+            int age = 0;
+            String name = "";
+            String breed = "";
+            double weight = 0.0;
+
+            int id = HandleInput("Please enter your Owner ID");
             HandleInput("Please enter the name of your dog", name);
             HandleInput("Please enter the breed of your dog", breed);
             HandleInput("Please enter the age of your dog", age);
@@ -36,22 +38,24 @@ namespace TheBarkingLotHasslerChasenB
             Console.Read();
         }
 
-        private static void HandleInput(String input, int output)
+        private static int HandleInput(String input, int output)
         {
             do
             {
                 Console.WriteLine(input);
                 isInt = int.TryParse(Console.ReadLine(), out output);
-                if (!isInt)
-                {
-                    Console.WriteLine("Please enter an integer value\n");
-                }
-                // If the user didn't enter an integer, they are asked for input once again
-                else
+                if (isInt)
                 {
                     Console.WriteLine("");
+                    return output;
                 }
+
+                Console.WriteLine("Please enter an integer value\n");
+
+
             } while (!isInt);
+
+            return 0;
            
         }
 
