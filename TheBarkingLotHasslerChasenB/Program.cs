@@ -11,29 +11,23 @@ namespace TheBarkingLotHasslerChasenB
         static bool isInt = false;
         static bool isDouble = false;
 
-        
-
         static void Main(string[] args)
         {
-
+            int id = 0;
             int age = 0;
-            String name = "";
-            String breed = "";
             double weight = 0.0;
 
-            int id = HandleInput("Please enter your Owner ID");
-            HandleInput("Please enter the name of your dog", name);
-            HandleInput("Please enter the breed of your dog", breed);
-            HandleInput("Please enter the age of your dog", age);
-            HandleInput("Please enter the weight of your dog", weight);
+            id = HandleInput("Please enter your Owner ID", id);
+            String name = HandleInput("Please enter the name of your dog");
+            String breed = HandleInput("Please enter the breed of your dog");
+            age = HandleInput("Please enter the age of your dog", age);
+            weight = HandleInput("Please enter the weight of your dog", weight);
 
             DogOwner dogOwner = new DogOwner(id);
 
             Dog fido = new Dog(age, name, breed, weight);
 
             DetermineCost(fido.GetDogWeight());
-
-
 
             Console.Read();
         }
@@ -59,14 +53,20 @@ namespace TheBarkingLotHasslerChasenB
            
         }
 
-        private static void HandleInput(String input, String output)
+        private static String HandleInput(String input)
         {
+            String output;
+
             Console.WriteLine(input);
+
             output = Console.ReadLine();
+
             Console.WriteLine("");
+
+            return output;
         }
 
-        private static void HandleInput(String input, double output)
+        private static double HandleInput(String input, double output)
         {
             do
             {
@@ -80,28 +80,36 @@ namespace TheBarkingLotHasslerChasenB
                 else
                 {
                     Console.WriteLine("");
+                    return output;
                 }
             } while (!isDouble);
 
+            return 0.0;
         }
 
         private static void DetermineCost(double weight)
         {
+            double billAmount;
+
             if (weight < 15.0)
             {
-                Console.WriteLine("Your bill for weekly day care is going to be: $55");
+                billAmount = 55.00;
+                Console.WriteLine("Your bill for weekly day care is going to be: ${0}", billAmount);
             }
-            else if (weight > 15.0 && weight <= 30)
+            else if (weight > 15.0 && weight <= 30.0)
             {
-                Console.WriteLine("Your bill for weekly day care is going to be: $75");
+                billAmount = 75.00;
+                Console.WriteLine("Your bill for weekly day care is going to be: ${0}", billAmount);
             }
-            else if (weight > 30 && weight <= 80)
+            else if (weight > 30.0 && weight <= 80.0)
             {
-                Console.WriteLine("Your bill for weekly day care is going to be: $105");
+                billAmount = 105.00;
+                Console.WriteLine("Your bill for weekly day care is going to be: ${0}", billAmount);
             }
             else
             {
-                Console.WriteLine("Your bill for weekly day care is going to be: $125");
+                billAmount = 125.00;
+                Console.WriteLine("Your bill for weekly day care is going to be: ${0}", billAmount);
             }
         }
     }
