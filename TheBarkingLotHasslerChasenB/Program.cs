@@ -7,110 +7,120 @@ using System.Threading.Tasks;
 namespace TheBarkingLotHasslerChasenB
 {
     class Program
-    {
-        static bool isInt = false;
-        static bool isDouble = false;
-
+    { 
         static void Main(string[] args)
         {
-            int id = 0;
-            int age = 0;
-            double weight = 0.0;
-
-            id = HandleInput("Please enter your Owner ID", id);
-            String name = HandleInput("Please enter the name of your dog");
-            String breed = HandleInput("Please enter the breed of your dog");
-            age = HandleInput("Please enter the age of your dog", age);
-            weight = HandleInput("Please enter the weight of your dog", weight);
+            int id = HandleIntInput("Please enter your Owner ID");
+            String name = HandleStringInput("Please enter the name of your dog");
+            String breed = HandleStringInput("Please enter the breed of your dog");
+            int age = HandleIntInput("Please enter the age of your dog");
+            double weight = HandleDoubleInput("Please enter the weight of your dog");
 
             DogOwner dogOwner = new DogOwner(id);
 
-            Dog fido = new Dog(age, name, breed, weight);
+            Dog newDog = new Dog(age, name, breed, weight);
 
-            DetermineCost(fido.GetDogWeight());
+            double cost = DetermineCost(newDog.GetDogWeight());
+
+            PrintWeeklyBill(cost);
 
             Console.Read();
         }
 
-        private static int HandleInput(String input, int output)
+        private static int HandleIntInput(String input)
         {
-            do
-            {
-                Console.WriteLine(input);
-                isInt = int.TryParse(Console.ReadLine(), out output);
-                if (isInt)
-                {
-                    Console.WriteLine("");
-                    return output;
-                }
+            int output = 0;
 
-                Console.WriteLine("Please enter an integer value\n");
-
-
-            } while (!isInt);
-
-            return 0;
-           
-        }
-
-        private static String HandleInput(String input)
-        {
-            String output;
+            bool isValid = false;
 
             Console.WriteLine(input);
 
-            output = Console.ReadLine();
+            while(!isValid || output < 0)
+            {
+                String buffer = Console.ReadLine();
+                isValid = int.TryParse(buffer, out output);
+                if(!isValid || output < 0)
+                {
+                    Console.WriteLine("Please enter a positive integer value\n");
+                    Console.WriteLine(input);
+                }
+            }
+
+            Console.WriteLine("");
+            return output;
+        }
+
+        private static String HandleStringInput(String input)
+        {
+            String output = "";
+
+            Console.WriteLine(input);
+            String buffer = Console.ReadLine();
+
+            while (String.IsNullOrEmpty(buffer))
+            {
+                output = buffer;
+                if(String.IsNullOrEmpty(buffer))
+                {
+                    Console.WriteLine("Please enter valid input\n");
+                    Console.WriteLine(input);
+                }
+            }
 
             Console.WriteLine("");
 
             return output;
         }
 
-        private static double HandleInput(String input, double output)
+        private static double HandleDoubleInput(String input)
         {
-            do
-            {
-                Console.WriteLine(input);
-                isDouble = double.TryParse(Console.ReadLine(), out output);
-                if (!isDouble)
-                {
-                    Console.WriteLine("Please enter a decimal value\n");
-                }
-                // If the user didn't enter a decimal, they are asked for input once again
-                else
-                {
-                    Console.WriteLine("");
-                    return output;
-                }
-            } while (!isDouble);
+            double output = 0.0;
+            bool isValid = false;
+            Console.WriteLine(input);
 
-            return 0.0;
+            while(!isValid || output < 0)
+            {
+                String buffer = Console.ReadLine();
+                isValid = double.TryParse(buffer, out output);
+                if(!isValid || output < 0)
+                {
+                    Console.WriteLine("Please enter a positive decimal value\n");
+                    Console.WriteLine(input);
+                }
+            }
+
+            Console.WriteLine("");
+
+            return output;
         }
 
-        private static void DetermineCost(double weight)
+        private static double DetermineCost(double weight)
         {
             double billAmount;
 
             if (weight < 15.0)
             {
                 billAmount = 55.00;
-                Console.WriteLine("Your bill for weekly day care is going to be: ${0}", billAmount);
             }
             else if (weight > 15.0 && weight <= 30.0)
             {
                 billAmount = 75.00;
-                Console.WriteLine("Your bill for weekly day care is going to be: ${0}", billAmount);
             }
             else if (weight > 30.0 && weight <= 80.0)
             {
                 billAmount = 105.00;
-                Console.WriteLine("Your bill for weekly day care is going to be: ${0}", billAmount);
             }
             else
             {
                 billAmount = 125.00;
-                Console.WriteLine("Your bill for weekly day care is going to be: ${0}", billAmount);
             }
+
+            return billAmount;
+        }
+
+        private static void PrintWeeklyBill(double costPerWeek)
+        {
+            Console.WriteLine($"Your bill for weekly day care is going to be: ${costPerWeek:0.00}");
         }
     }
 }
